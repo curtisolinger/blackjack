@@ -1,3 +1,4 @@
+# A blackjack game!
 import sys
 import random
 import os
