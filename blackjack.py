@@ -1,84 +1,91 @@
 import sys
 import random
+import os
 from art import logo
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+# players_hand = []
+# dealers_hand = []
 
-my_hand = []
-dealers_hand = []
-
-deal_cards(1)
-
-
-
-
-under_limit = True
-
-while under_limit:
-	while True:
-		hit = input("Would you like to hit or stand? Type 'y' to hit or 'n' to stand ").lower()
-		if deal_again in ["y", "n"]:
-			if deal_again == "y":
-				hit = True
+def main():
+	play_again = True
+	while play_again:
+		# Start the game
+		players_hand = []
+		dealers_hand = []
+		print(logo)
+		deal_cards(players_hand, 2)
+		deal_cards(dealers_hand, 2)
+		print(f"Your hand is {players_hand} for a sum of {sum(players_hand)}")
+		print(f"and the dealer's face up card is {dealers_hand[1:]}")
+		
+		do_i_want_another_card = True
+		while do_i_want_another_card:
+			# Ask if the user would like another card
+			while True:
+				response = input("Would you like another card? Type 'y' to hit or 'n' to stand ").lower()
+				if response in ["y", "n"]:
+					break
+				else:
+					print("Invalid input - Please enter 'y' or 'n'")
+			if response == 'y':
+				# Dealer deals user another card
+				deal_cards(players_hand, 1)
+				print(f"Your hand is {players_hand} for a sum of {sum(players_hand)}")
+				# Check to see if the sum of the players hand is over 21
+				if sum(players_hand) > 21:
+					print("You busted. You lose.")
+					break
 			else:
-				hit = False
-			break
-		else:
-			print("Invalid input - Please enter 'y' or 'n'")
-
-	
-	if hit:
-		deal_cards(1)
-		if over_limit(my_hand):
-			print(f"The sum of your cards is {sum(my_hand)}. You lose")
-			sys.exit(0)
-		elif over_limit(dealers_hand):
-			print(f"The dealer busted with the cards {dealers_hand} and a sum of {sum(dealers_hand)}. You win!")
-			sys.exit(0)
-		elif !
-
+				do_i_want_another_card = False
 
 		
+				# Check if dealer has blackjack
+				if sum(dealers_hand) == 21:
+					if sum(players_hand) == sum(dealers_hand):
+						print("Draw")
+					else:
+						print("You lose")	
 
-	elif !hit:
-		under_limit = False
+				else:
+					# Let dealer continuing drawing cards until game is over
+					deal = True
+					while deal:
+						deal_cards(dealers_hand, 1)
+						print(f"The dealer has {dealers_hand} for a sum of {sum(dealers_hand)}")
+						if sum(dealers_hand) > 21:
+							print("The dealer busted. You win!")
+							deal = False
+						else:
+							if sum(dealers_hand) > 16:
+								if sum(players_hand) > sum(dealers_hand):
+									print("You win!")
+								else:
+									if sum(players_hand) == sum(dealers_hand):
+										print("Draw")
+									else:
+										print("You lose")
+								deal = False
 
-def deal_cards(n):
+
+		# Ask if player would like to play agian
+		while True:
+			response = input("Would you like to play again? Type 'y' for yes and 'n' for no. ").lower()
+			if response in ["y", "n"]:
+					break
+			else:
+				print("Invalid input - Please enter 'y' or 'n'")
+
+		if response == 'y':
+			os.system('clear')
+		else:
+			print("Goodbye")
+			play_again = False
+
+
+def deal_cards(list, n):
 	for i in range(n):
-		my_hand.append(random.choice(cards))
-		dealers_hand.append(random.choice(cards))
-	print(f"Your hand is: {my_hand} for a sum of {sum(my_hand)}")
-	print(f"and the dealer's face up card(s) are {dealers_hand[1:]}")
+		list.append(random.choice(cards))
 
 
-def over_limit(list0):
-	if sum(list0) > 21:
-		return True
-	return False
-
-
-def check_for_winner(list0, list1):
-	sum0 = sum(list0)
-	sum1 = sum(list1)
-
-	if sum0 == sum1:
-		print("Draw")
-		sys.exit(0)
-	elif sum0 > sum1:
-		print("You win!")
-		sys.exit(0)
-	else:
-		print("You lose.")
-		sys.exit(0)
-
-
-
-
-
-
-
-
-
-
-
-
+main()
